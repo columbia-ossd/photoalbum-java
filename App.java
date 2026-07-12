@@ -18,6 +18,9 @@ public class App {
 			else if (option == 2) {
 				viewPhoto(a);
 			}
+			else if (option == 3) {
+				removePhoto(a);
+			}
 			else if (option != 0) {
 				System.out.println("Invalid option");
 			}
@@ -29,6 +32,7 @@ public class App {
 	public static int showMenu() {
 		System.out.println("1: List all photos\n" + 
 				"2: View a photo\n" + 
+				"3: Remove a photo\n"+
 				"0: Exit");
 		System.out.print("Choose an option: ");
 		Scanner in = new Scanner(System.in);
@@ -55,6 +59,43 @@ public class App {
 		}
 		else {
 			showPhoto(a.getFilename(choice-1));
+		}
+	}
+
+
+	private static void removePhoto(Album a) {
+		if (a.getNumPhotos() == 0) {
+		System.out.println("The album is empty.");
+		return;
+		}
+
+		for (int i = 0; i < a.getNumPhotos(); i++) {
+		System.out.println((i+1) + ": " + a.getDescription(i));
+		}
+
+		System.out.print("Enter number of photo to remove: ");
+		Scanner in = new Scanner(System.in);
+		int choice = in.nextInt();
+		if (choice <= 0 || choice > a.getNumPhotos()) {
+		System.out.println("Invalid selection");
+		return;
+		}
+
+		String desc = a.getDescription(choice - 1);
+		System.out.print("Are you sure you want to remove \"" + desc + "\"? (y/n): ");
+		Scanner confirmIn = new Scanner(System.in);
+		String confirm = confirmIn.next();
+		if (confirm.equalsIgnoreCase("y")) {
+			boolean removed = a.removePhoto(choice - 1);
+			if (removed) {
+				System.out.println("Photo removed.");
+			}
+			else {
+				System.out.println("Error removing photo.");
+			}
+		}
+		else {
+		System.out.println("Removal cancelled.");
 		}
 	}
 
